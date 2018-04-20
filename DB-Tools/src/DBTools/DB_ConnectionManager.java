@@ -15,16 +15,21 @@ import java.sql.SQLException;
  */
 public class DB_ConnectionManager {
     
-    private boolean isConnnected = false;
-    Connection myConnection;
+    private boolean isConnnected; // = false;
+    private Connection My_Connection;
     
 //    public DB_ConnectionManager() {
 //    }
     
-    public DB_ConnectionManager(String aClassNameAsString, String aConnectionUrlAsString, String aSign_CONNECT_or_DISCONNECT) {
+    public DB_ConnectionManager(String aConnectionUrlAsString, String aSign_CONNECT_or_DISCONNECT) {
         
-        set_connection(aClassNameAsString, aConnectionUrlAsString,aSign_CONNECT_or_DISCONNECT);        
+        set_connection(aConnectionUrlAsString,aSign_CONNECT_or_DISCONNECT);        
         
+    }
+    
+    public Connection getConnection() {
+        
+        return My_Connection;
     }
     
     public boolean isConnnected() {
@@ -33,31 +38,36 @@ public class DB_ConnectionManager {
         
     }
 
-    private void set_connection(String aClassNameAsString, String aConnectionUrlAsString, String aSign_CONNECT_or_DISCONNECT) {
+    public void setConnection_CLOSED(String aConnectionUrlAsString, String aSign_CONNECT_or_DISCONNECT) {
+        
+        set_connection(aConnectionUrlAsString, aSign_CONNECT_or_DISCONNECT);
+        
+    }
+    private void set_connection(String aConnectionUrlAsString, String aSign_CONNECT_or_DISCONNECT) {
 
         try
         {
-            if (myConnection == null && aSign_CONNECT_or_DISCONNECT.equals("CONNECT")) {
+            if (/*myConnection == null && */aSign_CONNECT_or_DISCONNECT.equals("CONNECT")) {
                 
-                Class myClasse = Class.forName(aClassNameAsString);
-                String myURL = aConnectionUrlAsString;
-                myConnection = DriverManager.getConnection(myURL);
+//                Class.forName(aClassNameAsString); <- muss in den ClassPath
+                String myURL = "jdbc:sqlserver://HV-ABAS-SQL;databaseName=DiafBDE;integratedSecurity=true"; //aConnectionUrlAsString;
+                My_Connection = DriverManager.getConnection(myURL);
             }
-            if (myConnection != null && !myConnection.isClosed() && aSign_CONNECT_or_DISCONNECT.equals("DISCONNECT")) {
+            if (My_Connection != null && !My_Connection.isClosed() && aSign_CONNECT_or_DISCONNECT.equals("DISCONNECT")) {
                 
-                myConnection.close();
+                My_Connection.close();
             }
         }
-        catch (ClassNotFoundException | SQLException myException )
+        catch (SQLException myException )
         {
         }
         finally {
             try {
-                if (myConnection == null) {
+                if (My_Connection == null) {
                     
                     isConnnected = false;
                 }
-                if (myConnection != null && !myConnection.isClosed()) {
+                if (My_Connection != null && !My_Connection.isClosed()) {
                     
                     isConnnected = true;
                 }
