@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * Diese Klasse holt das ResultSet als Ergebnis für die übergebenen Parameter, die direkt an den Kostruktor übergeben werden.
+ * Diese Klasse holt das ResultSet direkt als Ergebnis für die übergebenen Parameter, die direkt an den Kostruktor übergeben werden.
  * 
  * Dem Konstruktor werden sämtliche Parameter übergeben.
  * 
